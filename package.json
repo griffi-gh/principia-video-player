@@ -1,0 +1,13 @@
+{
+  "name": "principia-video-player",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {},
+  "author": "griffi-gh",
+  "license": "ISC",
+  "dependencies": {
+    "jpeg-js": "^0.4.3"
+  }
+}
