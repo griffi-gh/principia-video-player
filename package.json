@@ -9,6 +9,6 @@
   "license": "ISC",
   "dependencies": {
     "ffmpeg": "^0.0.4",
-    "jpeg-js": "^0.4.3"
+    "sharp": "^0.29.3"
   }
 }
