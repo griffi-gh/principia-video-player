@@ -35,9 +35,13 @@ await video.fnExtractFrameToJPG(framesDir, {
 });
 
 // Process files
-console.log('Processing images...')
+console.log('Processing images...');
 const framesFiles = await fs.readdir(framesDir);
 framesFiles.sort((a, b) => getNumeric(a) - getNumeric(b));
+console.log('Please wait');
+let frameIndex = 0;
+let repeats = 0;
+let currentColor = false;
 for(const frameFileName of framesFiles) {
   const framePath = path.resolve(path.join(framesDir, frameFileName));
   const frameData = await sharp(framePath)
@@ -45,8 +49,6 @@ for(const frameFileName of framesFiles) {
     .resize({width: targetWidth, height: targetHeight})
     .toColorspace('b-w')
     .raw().toBuffer();
-  let currentColor = false;
-  let repeats = 0;
   for(let i = 0; i < frameData.length; i++) {
     const pixelColor = (frameData[i] > 0);
     if(pixelColor == currentColor) {
@@ -61,9 +63,10 @@ for(const frameFileName of framesFiles) {
       repeats = 0;
     }
   }
-  if(repeats > 0) output.push(repeats);
-  break;
+  if((frameIndex % 500) === 0) console.log(frameIndex + '/' + framesFiles.length);
+  frameIndex++;
 }
+if(repeats > 0) output.push(repeats);
 
 // Delete the frames
 console.log('Cleaning up...');
