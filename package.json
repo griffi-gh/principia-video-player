@@ -9,6 +9,7 @@
   "license": "ISC",
   "dependencies": {
     "ffmpeg": "^0.0.4",
+    "lzma-native": "^8.0.1",
     "sharp": "^0.29.3"
   }
 }

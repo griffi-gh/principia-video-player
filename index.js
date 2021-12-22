@@ -2,7 +2,7 @@ import * as fs from 'fs/promises';
 import * as path from 'path';
 import ffmpeg from 'ffmpeg';
 import sharp from 'sharp';
-import zlib from 'zlib';
+import lzma from 'lzma-native';
 
 // Constants
 const targetWidth = 255;
@@ -69,6 +69,16 @@ for(const frameFileName of framesFiles) {
 console.log('Cleaning up...');
 try { await fs.rm(framesDir, {recursive: true, force: true}); } catch {}
 
-// Done, write the output file
-// TODO write out
+// Build a Uint8array and compress it
+console.log('Compressing...');
+const u8output = new Uint8Array(output);
+const compressedData = await new Promise((resolve, reject) => {
+  lzma.compress(u8output, data => resolve(data));
+});
+
+// Write the output file
+console.log('Writing...')
+await fs.writeFile('output.bin', compressedData);
+
+// Done!
 console.log('Done!');
