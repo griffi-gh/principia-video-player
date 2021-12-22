@@ -3,6 +3,9 @@ import * as path from 'path';
 import ffmpeg from 'ffmpeg';
 import sharp from 'sharp';
 import lzma from 'lzma-native';
+import z85 from 'z85';
+
+console.time('Done');
 
 // Constants
 const targetWidth = 255;
@@ -73,15 +76,20 @@ console.log('Cleaning up...');
 try { await fs.rm(framesDir, {recursive: true, force: true}); } catch {}
 
 // Build a Uint8array and compress it
-console.log('Compressing...');
+console.log('Compressing (LZMA)...');
 const u8output = new Uint8Array(output);
 const compressedData = await new Promise((resolve, reject) => {
   lzma.compress(u8output, data => resolve(data));
 });
 
+// z85
+console.log('Using ZeroMQ Base-85 Encoding on compressedData...');
+const z85output = z85.encode(compressedData);
+
 // Write the output file
 console.log('Writing...')
-await fs.writeFile('output.bin', compressedData);
+await fs.writeFile('output.txt', z85output);
 
 // Done!
-console.log('Done!');
+console.log(`File size: ${z85output.length} bytes`);
+console.timeEnd('Done')
