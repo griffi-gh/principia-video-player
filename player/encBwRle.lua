@@ -1,1 +1,1 @@
-___DATASTRING___
+s="___DATASTRING___"
