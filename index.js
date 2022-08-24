@@ -11,12 +11,21 @@ const luaDatastring = buf => {
   let str = '';
   let dangerEscape = false;
   for (const byte of buf) {
-    if ((byte >= 32) && (byte <= 126)) {
-      if ((byte >= 48) && (byte <=57)) {
-        
-      }
-      str += String.fromCharCode(byte);
+    if (byte == 10) {
+      str += '\\n';
       dangerEscape = false;
+    } else if ((byte >= 32) && (byte <= 126)) {
+      if (dangerEscape && (byte >= 48) && (byte <= 57)) {
+        str += '\\' + byte.toString();
+        dangerEscape = true;
+      } else {
+        const chr = String.fromCharCode(byte);
+        if ((chr == '\\') || (chr == "'")) {
+          str += '\\';
+        }
+        str += chr;
+        dangerEscape = false;
+      }
     } else {
       const byteStr = byte.toString();
       str += '\\' + byteStr;
