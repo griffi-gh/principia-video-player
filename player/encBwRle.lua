@@ -1,4 +1,4 @@
-local cur = 0
+local cur = 3
 local function D(i)
   return DATA:byte(i or cur, -1)
 end
@@ -7,7 +7,7 @@ local
   skp,cur,fcr, --Skip, Cursor, FramebufferCursor
   fb,c --Framebuffer, Color
 = 
-  D(),D(1),
+  D(),D(2),
   0,3,1,
   {} --c = nil
 
@@ -29,7 +29,7 @@ function step()
           -- RENDER FRAME --
           for i=1,#fb do
             T = fb[i] and 255 or 0
-            this:set_sprite_texel(x,y,T,T,T,255)
+            this:set_static_sprite_texel(x,y,T,T,T,255)
             x = x + 1
             if x >= w then
               y = y + 1
@@ -38,11 +38,15 @@ function step()
           ------------------
           fb = {}
           fcr = 1
-          o = N --<nil>
+          o = nil
         end
       end
     end
     ---------------------------
   end 
   skp = skp - 1
+end
+function init()
+  this:init_draw(256, 128)
+  this:add_static_sprite(0, 0, 0, 2, 1, 0, 0, w, h)
 end

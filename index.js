@@ -20,7 +20,7 @@ getPixels(file, async (err, pixels) => {
   
   console.log("Generating player code...");
   let lua = await fs.readFile(`./player/${encoding}.lua`, 'utf-8');
-  lua = `local DATA=${ luaDatastring(buf) }\n` + lua;
+  lua = `local DATA=${ luaDatastring(buf) };` + lua;
   
   //lua = lua.replace("___DATASTRING___", luaDatastring(buf));
   
