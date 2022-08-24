@@ -1,6 +1,6 @@
 local cur = 3
 local function D(i)
-  return DATA:byte(i or cur)
+  return DATA:byte(i)
 end
 local 
   w,h, --Width, Height
@@ -24,7 +24,7 @@ function step()
       if d ~= 0 then
         if d == 255 then
           while true do
-            d = d + D()
+            d = d + D(cur)
             cur = cur + 1
             if D(cur - 1) ~= 255 then
               break
