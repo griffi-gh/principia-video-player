@@ -1,15 +1,11 @@
 local cur = 3
 local function D(i)
-  return DATA:byte(i)
+  return DATA:byte(i or cur)
 end
 local 
-  w,h, --Width, Height
-  skp,cur, --Skip, Cursor
+  w,h,skp, --Width, height, Skip
   x,y,c-- x , y, color (nil)
-= 
-  D(1),D(2),
-  0,3,
-  0,0
+= D(1),D(2),0,0,0
 
 --Assumes 60 fps; 60/4 = 15 fps
 function step()
@@ -18,13 +14,13 @@ function step()
     -- PARSE A SINGLE FRAME ----
     for i=1,25 do
       --game:show_numfeed(cur)
-      local d,T = D(cur),c and 255 or 0
+      local d,T = D(),c and 255 or 0
       cur = cur + 1
       c = not c
       if d ~= 0 then
         if d == 255 then
           while true do
-            d = d + D(cur)
+            d = d + D()
             cur = cur + 1
             if D(cur - 1) ~= 255 then
               break
