@@ -32,6 +32,7 @@ export default (pixels) => {
       }
       out.push(counter);
       pv = v;
+      counter = 1;
     }
   }
   
