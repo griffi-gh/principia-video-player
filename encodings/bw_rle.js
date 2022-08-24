@@ -9,9 +9,13 @@ export default (pixels) => {
   
   const out = [];
   
+  //Encode metadata
+  out.push(pixels.shape[1]); //Width
+  out.push(pixels.shape[2]); //Height
+  
+  //Encode pixels
   let counter = 0;
   let pv = false;
-  
   let i = 0;
   while (i < data.length) {
     const r = data[i++];
