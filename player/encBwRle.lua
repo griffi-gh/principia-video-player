@@ -13,7 +13,7 @@ function step()
     skp = 4 
     -- PARSE A SINGLE FRAME ----
     for i=1,25 do
-      local d,T,W = D(),c and 255 or 0
+      local d,T,W = D()
       cur = cur + 1
       c = not c
       if d ~= 0 then
@@ -26,6 +26,7 @@ function step()
           end
         end
         for i=1,d do
+          T = c and 255 or 0
           this:set_sprite_texel(x,y,T,T,T,255)
           x = x + 1
           if x >= w then
