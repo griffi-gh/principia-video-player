@@ -21,7 +21,7 @@ function step()
       local d,T = D(),c and 255 or 0
       cur = cur + 1
       c = not c
-      if d > 255 then
+      if d == 255 then
         while true do
           d = d + D()
           cur = cur + 1
@@ -33,10 +33,10 @@ function step()
       for i=1,d do
         this:set_sprite_texel(x,y,T,T,T,255)
         x = x + 1
-        if x > w then
+        if x >= w then
           x = 0
           y = y + 1
-          if y > h then
+          if y >= h then
             y = 0
           end
         end
