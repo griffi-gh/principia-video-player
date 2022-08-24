@@ -11,19 +11,27 @@ const luaDatastring = buf => {
   let str = '';
   let dangerEscape = false;
   for (const byte of buf) {
-    if (byte == 10) {
-      str += '\\n';
+    const escapeMap = [];
+    {
+      escapeMap[7]  = 'a';
+      escapeMap[8]  = 'b';
+      escapeMap[9]  = 't';
+      escapeMap[10] = 'n';
+      escapeMap[11] = 'v';
+      escapeMap[12] = 'f';
+      escapeMap[13] = 'r';
+      escapeMap[34] = '"';
+      escapeMap[92] = '\\';
+    }
+    if (escapeMap[byte]) {
+      str += '\\' + escapeMap[byte];
       dangerEscape = false;
     } else if ((byte >= 32) && (byte <= 126)) {
       if (dangerEscape && (byte >= 48) && (byte <= 57)) {
         str += '\\' + byte.toString();
         dangerEscape = true;
       } else {
-        const chr = String.fromCharCode(byte);
-        if ((chr == '\\') || (chr == "'")) {
-          str += '\\';
-        }
-        str += chr;
+        str += String.fromCharCode(byte);
         dangerEscape = false;
       }
     } else {
@@ -48,7 +56,7 @@ getPixels(file, async (err, pixels) => {
   
   console.log("Generating player code...");
   let lua = await fs.readFile(`./player/${encoding}.lua`, 'utf-8');
-  lua = lua.replace("$DATASTRING$", luaDatastring(buf));
+  lua = lua.replace("___DATASTRING___", luaDatastring(buf));
   console.log(`\t- Player code size: ${lua.length} characters`);
   
   console.log("Writing data...");
