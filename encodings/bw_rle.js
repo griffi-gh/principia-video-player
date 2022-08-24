@@ -26,7 +26,7 @@ export default (pixels) => {
     if (v === pv) {
       counter++;
     } else {
-      while (counter > 0xFF) {
+      while (counter >= 0xFF) {
         counter -= 0xFF;
         out.push(0xFF);
       }

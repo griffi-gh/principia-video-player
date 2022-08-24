@@ -13,18 +13,16 @@ function step()
     skp = 4 
     -- PARSE A SINGLE FRAME ----
     for i=1,25 do
-      --game:show_numfeed(cur)
-      local d,T = D(),c and 255 or 0
+      local d,T,W = D(),c and 255 or 0
       cur = cur + 1
       c = not c
       if d ~= 0 then
         if d == 255 then
           while true do
-            d = d + D()
+            W = D()
+            d = d + W
             cur = cur + 1
-            if D(cur - 1) ~= 255 then
-              break
-            end
+            if W ~= 255 then break end
           end
         end
         for i=1,d do
