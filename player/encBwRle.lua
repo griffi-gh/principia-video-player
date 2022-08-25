@@ -21,7 +21,7 @@ end
 local 
   w,h,skp, --Width, height, Skip
   x,y,c-- x , y, color (nil)
-= D(1),D(2),0,0,0
+= 0,0,0,0,0
 
 --first, dexompress base64
 local g, z = 1, ""
@@ -29,7 +29,7 @@ function step()
   z = z .. dec(DATA:sub(g,2400-1+g))
   g = g + 2400
   if g > #DATA then
-    _G.step = step1
+    step = step1
     DATA = z
     w = D(1)
     h = D(2)
