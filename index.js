@@ -1,6 +1,5 @@
 import getPixels from 'get-pixels';
 import * as fs from 'fs/promises';
-import luaDatastring from './lua_datastring.js';
 import encBwRle from './encodings/bw_rle.js';
 
 const encodings = {encBwRle};
