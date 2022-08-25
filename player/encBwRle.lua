@@ -13,7 +13,6 @@ local function dec(data)
         return string.char(c)
     end))
 end
-DATA = dec(DATA)
 
 local cur = 3
 local function D(i)
@@ -24,8 +23,22 @@ local
   x,y,c-- x , y, color (nil)
 = D(1),D(2),0,0,0
 
---Assumes 60 fps; 60/4 = 15 fps
+--first, dexompress base64
+local g, z = 1, ""
 function step()
+  z = z .. dec(DATA:sub(g,2400-1+g))
+  g = g + 2400
+  if g > #DATA then
+    _G.step = step1
+    DATA = z
+    w = D(1)
+    h = D(2)
+  end
+  game:show_numfeed((g / #DATA) * 100)
+end
+
+--Assumes 60 fps; 60/4 = 15 fps
+function step1()
   if skp <= 0 then
     skp = 5
     -- PARSE A SINGLE FRAME ----
