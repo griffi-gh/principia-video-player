@@ -7,7 +7,8 @@ const encodings = {encBwRle};
 const file = process.argv[2] ?? "in.gif";
 const encoding = process.argv[3] ?? "encBwRle";
 
-console.log("Reading GIF file...");
+console.log(`Using encoding "${encoding}"`);
+console.log(`Reading GIF file (${file})...`);
 getPixels(file, async (err, pixels) => {
   if (err) {
     console.error("Error", err);
