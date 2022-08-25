@@ -1,4 +1,5 @@
 local function dec(data)
+    local b='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
     data = string.gsub(data, '[^'..b..'=]', '')
     return (data:gsub('.', function(x)
         if (x == '=') then return '' end
@@ -12,7 +13,7 @@ local function dec(data)
         return string.char(c)
     end))
 end
-DATA = dec(data)
+DATA = dec(DATA)
 
 local cur = 3
 local function D(i)
