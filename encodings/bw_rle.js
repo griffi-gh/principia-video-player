@@ -20,8 +20,7 @@ export default (pixels) => {
   while (i < data.length) {
     const r = data[i++];
     const g = data[i++];
-    const b = data[i++];
-    i++;
+    const b = data[i+=2];
     const v = threshold(r, g, b);
     if (v === pv) {
       counter++;

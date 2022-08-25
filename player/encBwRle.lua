@@ -10,7 +10,7 @@ local
 --Assumes 60 fps; 60/4 = 15 fps
 function step()
   if skp <= 0 then
-    skp = 4 
+    skp = 5
     -- PARSE A SINGLE FRAME ----
     local B
     while not B do
