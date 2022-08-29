@@ -36,7 +36,7 @@ function step()
     S = 5
     --Keep running until the frame is ready
     B = N
-    while not B do
+    repeat
       
       --Keep reading $FF until we encounter something else
       d = 0
@@ -68,7 +68,8 @@ function step()
         end
         
       end
-    end
+      
+    until B
   end
   -- Decrement delay counter
   S = S - 1
