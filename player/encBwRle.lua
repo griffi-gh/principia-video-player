@@ -29,7 +29,6 @@ local function D(i)
 end
 w = D(1)
 h = D(2)
-assert(D() == 0)
 
 function step()
   if S <= 0 then
@@ -38,6 +37,7 @@ function step()
     --Keep running until the frame is ready
     B = N
     while not B do
+      
       --Keep reading $FF until we encounter something else
       d = 0
       repeat
@@ -45,13 +45,17 @@ function step()
         d = d + T
         p = p + 1
       until T ~= F
+      
       -- Flip color
       c = not c
+      
       --Render
       for i=1,d do
+        
         --Plot pixel
         T = c and F or 0
         this:set_sprite_texel(x,h-y,T,T,T,F)
+        
         --Increment scan pos
         x = x + 1
         if x >= w then
@@ -62,10 +66,11 @@ function step()
             B = 1 -- Frame ready
           end
         end
+        
       end
     end
   end
-  -- Decrement counter
+  -- Decrement delay counter
   S = S - 1
   --Drae sprite
   this:draw_sprite(0, 0, 0, 2, 1, 0, 0, w, h)
