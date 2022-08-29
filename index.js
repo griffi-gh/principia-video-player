@@ -19,8 +19,15 @@ getPixels(file, async (err, pixels) => {
   console.log(`\t- Raw buffer size: ${buf.length} bytes.`);
   
   console.log("Generating player code...");
-  let lua = await fs.readFile(`./player/${encoding}.lua`, 'utf-8');
-  lua = `local DATA="${ buf.toString('base64') }";` + lua;
+  const PREFIX = 'local DATA=[=[\n';
+  const POSTFIX = ']=];';
+  const playerCode = await fs.readFile(`./player/${encoding}.lua`);
+  const lua = Buffer.concat([
+    Buffer.from(PREFIX),
+    buf,
+    Buffer.from(POSTFIX),
+    playerCode
+  ]);
   console.log(`\t- Player code size: ${lua.length} characters`);
   
   console.log("Writing data...");
