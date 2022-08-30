@@ -1,7 +1,7 @@
 --[[
   video data is stored in DATA (binary string)
-     _________               
-   _/ GLOBALS \_____________ 
+     _________
+   _/ GLOBALS \_____________
   | p | num  | pointer      |
   | x | num  | scan x       |
   | y | num  | scan y       |
@@ -10,17 +10,17 @@
   | h | num  | height       |
   | c | bool | color        |
   | d | num  | rle length   |
-   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ 
-     ___________             
+   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+     ___________
    _/ CONSTANTS \____________
   | F | num | 255           |
   | N | nil | nil           |
-   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ 
+   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
      _______________
-   _/ step() LOCALS \____________ 
+   _/ step() LOCALS \____________
   | B | bool | frame ready       |
   | T | any  | generic temporary |
-   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ 
+   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 ]]
 
 --c,B,T,w,h = nil
@@ -30,6 +30,17 @@ local function D(i)
 end
 w = D(1)
 h = D(2)
+
+local t ='\n\n'
+for i=0,255 do
+  if i ~= D(i+1) then
+    t = t..'!  '
+  else
+    t = t..'  '
+  end
+  t = t..tostring(i)..' is '..tostring(D(i+1))..'\n'
+end
+error(t)
 
 function step()
   if S < 1 then
