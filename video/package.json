@@ -1,0 +1,16 @@
+{
+  "name": "principia-video-player-2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "griffi-gh",
+  "license": "ISC",
+  "dependencies": {
+    "upng-js": "^2.1.0"
+  }
+}

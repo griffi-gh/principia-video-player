@@ -1,5 +1,5 @@
 {
-  "name": "principia-video-player-2",
+  "name": "principia-video-player-2-audio",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,9 +8,6 @@
     "start": "node .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "upng-js": "^2.1.0"
-  }
+  "author": "griffi-gh",
+  "license": "ISC"
 }
