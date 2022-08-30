@@ -56,7 +56,7 @@ function step()
         
         --Plot pixel
         T = c and F or 0
-        this:set_sprite_texel(x,h-y,T,T,T,F)
+        this:set_sprite_texel(x,h-y-1,T,T,T,F)
         
         --Increment scan pos
         x = x + 1
