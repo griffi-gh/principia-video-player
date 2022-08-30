@@ -15,7 +15,7 @@ const pngBuf = await fs.readFile(file);
 console.log("Decoding png...")
 let pixels, width, height;
 {
-  const image  = UPNG.decode(pngBuf);
+  const image = UPNG.decode(pngBuf);
   width = image.width;
   height = image.height;
   console.log(`\t- Resolution: ${width}x${height}`);
@@ -23,17 +23,16 @@ let pixels, width, height;
   const frames = UPNG.toRGBA8(image);
   console.log(`\t- Frames: ${frames.length}`);
   
-  const pixarr = Buffer.allocUnsafe(width * height * frames.length * 4);
+  const buff = Buffer.allocUnsafe(width * height * frames.length * 4);
   let ptr = 0;
   for (const frame of frames) {
     const view = new Uint8ClampedArray(frame);
-    //TODO use a faster way to copy
     for (let i = 0; i < view.length; i++) {
-      pixarr[ptr++] = view[i];
+      buff[ptr++] = view[i];
     }
   }
-  pixels = new Uint8ClampedArray(pixarr);
-  
+  console.assert(ptr == buff.length, "Buffer not filled");
+  pixels = new Uint8ClampedArray(buff);
 }
 
 console.log("Generating video data...")
