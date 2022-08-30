@@ -56,11 +56,13 @@ const lua = Buffer.concat([
 console.log(`\t- Player code size: ${lua.length} characters`);
   
 console.log("Writing data...");
-await fs.rm("./output", { recursive: true });
+try {
+  await fs.rm("./output", { recursive: true });
+} catch {}
 await fs.mkdir("./output");
 await Promise.all([
   fs.writeFile("./output/player.lua", lua),
   fs.writeFile("./output/video.bin", buf)
 ]);
 
-console.log("Done.");
+console.log("Done. check 'output' directory");
