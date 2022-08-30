@@ -6,5 +6,6 @@
   "private": true,
   "dependencies": {
     "upng-js": "^2.1.0"
-  }
+  },
+  "packageManager": "yarn@3.2.3"
 }

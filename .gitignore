@@ -1,7 +1,10 @@
-/in*.png
-/in*.apng
-/apple.webm
-/output
-node_modules
+.pnp.*
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
 /output
 /_data
