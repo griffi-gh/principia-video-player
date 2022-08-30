@@ -17,10 +17,10 @@
   | N | nil | nil           |
    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ 
      _______________
-   _/ step() LOCALS \____________
+   _/ step() LOCALS \____________ 
   | B | bool | frame ready       |
-  | T | num  | generic temporary |
-   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+  | T | any  | generic temporary |
+   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ 
 ]]
 
 --c,B,T,w,h = nil
@@ -32,7 +32,7 @@ w = D(1)
 h = D(2)
 
 function step()
-  if S <= 0 then
+  if S < 1 then
     --Reset delay counter
     S = 5
     --Keep running until the frame is ready
