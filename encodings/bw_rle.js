@@ -4,14 +4,12 @@ const threshold = (r, g, b) => {
   return ((r + g + b) / 3) > TRESHOLD;
 };
 
-export default (pixels) => {
-  const data = pixels.data;
-  
+export default (data, width, height) => {
   const out = [];
   
   //Encode metadata
-  out.push(pixels.shape[1]); //Width
-  out.push(pixels.shape[2]); //Height
+  out.push(width);
+  out.push(height); 
   
   //Encode pixels
   let counter = 0;
