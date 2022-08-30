@@ -1,9 +1,7 @@
-/video/in*.gif
-/video/in*.png
-/video/in*.apng
-/video/in*.webm
-/video/apple.webm
-/video/output
+/in*.png
+/in*.apng
+/apple.webm
+/output
 node_modules
 /output
 /_data

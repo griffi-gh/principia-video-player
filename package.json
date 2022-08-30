@@ -1,0 +1,10 @@
+{
+  "name": "principia-video-player",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "upng-js": "^2.1.0"
+  }
+}
