@@ -1,8 +1,7 @@
-/in.gif
 /in*.gif
-/out.bin
-/out*.bin
-/output
+/in*.png
+/in*.apng
+/in*.webm
 /apple.webm
-/output.gif
+/output
 /node_modules

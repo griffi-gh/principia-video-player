@@ -11,6 +11,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "get-pixels": "^3.3.3"
+    "upng-js": "^2.1.0"
   }
 }
