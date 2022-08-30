@@ -41,13 +41,14 @@ console.log(`\t- Raw buffer size: ${buf.length} bytes.`);
   
 console.log("Generating player code...");
 const PREFIX = 'local DATA=([=[\n';
-const POSTFIX = ']=]):gsub("\\n\\1","\\r"):gsub("\\n\\0","\\n");';
+const POSTFIX = String.raw `]=]):gsub("\nn","\r"):gsub("\nr","\n"):gsub("\n0","\0");`;
 const playerCode = await fs.readFile(`./player/${encoding}.lua`);
 const lua = Buffer.concat([
   Buffer.from(PREFIX),
   buf
-    .replace(Buffer.from([10]), Buffer.from([10, 0]))
-    .replace(Buffer.from([13]), Buffer.from([10, 1])),
+    .replace(Buffer.from([0 ]), Buffer.from([10, '0'.charCodeAt()]))
+    .replace(Buffer.from([10]), Buffer.from([10, 'n'.charCodeAt()]))
+    .replace(Buffer.from([13]), Buffer.from([10, 'r'.charCodeAt()])),
   Buffer.from(POSTFIX),
   playerCode
 ]);
