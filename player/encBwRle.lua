@@ -9,21 +9,22 @@
   | w | num  | width        |
   | h | num  | height       |
   | c | bool | color        |
+  | d | num  | rle length   |
    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ 
      ___________             
    _/ CONSTANTS \____________
   | F | num | 255           |
   | N | nil | nil           |
    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯ 
-   ______________________________
+     _______________
+   _/ step() LOCALS \____________
   | B | bool | frame ready       |
-  | d | num  | rle length        |
   | T | num  | generic temporary |
    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 ]]
 
---c,B,d,T,w,h = nil
-local F,p,x,y,S, c,B,d,T,w,h = 255,3,0,0,0
+--c,B,T,w,h = nil
+local F,p,x,y,S,d, c,B,T,w,h = 255,3,0,0,0,0
 local function D(i)
   return DATA:byte(i or p)
 end
@@ -37,20 +38,21 @@ function step()
     --Keep running until the frame is ready
     B = N
     repeat
-      
-      --Keep reading $FF until we encounter something else
-      d = 0
-      repeat
-        T = D()
-        d = d + T
-        p = p + 1
-      until T ~= F
-      
-      -- Flip color
-      c = not c
-      
+      if d < 1 then
+        --Keep reading $FF until we encounter something else
+        repeat
+          T = D()
+          d = d + T
+          p = p + 1
+        until T ~= F
+        --Flip color
+        c = not c
+      end
+     
       --Render
-      for i=1,d do
+      while d > 0 do
+        --Decrement d
+        d = d - 1
         
         --Plot pixel
         T = c and F or 0
@@ -64,11 +66,11 @@ function step()
           if y >= h then
             y = 0
             B = 1 -- Frame ready
+            break
           end
         end
-        
       end
-      
+     
     until B
   end
   -- Decrement delay counter
