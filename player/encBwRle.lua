@@ -31,17 +31,6 @@ end
 w = D(1)
 h = D(2)
 
-local t ='\n\n'
-for i=0,255 do
-  if i ~= D(i+1) then
-    t = t..'!  '
-  else
-    t = t..'  '
-  end
-  t = t..tostring(i)..' is '..tostring(D(i+1))..'\n'
-end
-error(t)
-
 function step()
   if S < 1 then
     --Reset delay counter
