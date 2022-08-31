@@ -1,10 +1,10 @@
 import yargs from 'yargs/yargs';
 import { hideBin } from 'yargs/helpers';
 import UPNG from 'upng-js';
-import * as fs from 'fs/promises';
+import fs from 'fs-extra ';
 import * as pathlib from 'path';
 import { fileURLToPath } from 'url';
-import './buffer-replace.js';
+import './common/buffer-replace.js';
 import encBwRle from './encodings/bw_rle.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -47,7 +47,7 @@ const argv = await yargs(hideBin(process.argv))
     ];
     for (const path of paths) {
       if (!path) continue;
-      if (!(await fs.exists(path))) {
+      if (!(await fs.pathExists(path))) {
         return `File doesn't exist: "${path}"`;
       }
       const lstat = await fs.lstat(path);
@@ -58,11 +58,12 @@ const argv = await yargs(hideBin(process.argv))
       }
     }
     return true;
-  }).parseAsync();
+  })
+  .parseAsync();
 let { audio, video, output, encoding } = argv;
 if (audio) audio = pathlib.resolve(audio);
 if (video) video = pathlib.resolve(video);
-output = output.resolve(output);
+output = pathlib.resolve(output);
 
 /* Generate video */
 let outVideoLua, outVideoBin;
@@ -124,14 +125,12 @@ if (video) {
 {
   console.log("Writing data...");
   console.log(`\t- Output directory "${ output }"`);
-  if (!(await fs.exists(output))) {
-    await fs.mkdir(output);
-  }
+  await fs.ensureDir(output);
   const promises = [];
   if (video) {
     promises.push(
-      fs.writeFile(pathlib.join(output, "player.lua"), outVideoLua),
-      fs.writeFile(pathlib.join(output, "video.bin"), outVideoBin)
+      fs.outputFile(pathlib.join(output, "player.lua"), outVideoLua),
+      fs.outputFile(pathlib.join(output, "video.bin"), outVideoBin)
     );
   }
   await Promise.all(promises);
