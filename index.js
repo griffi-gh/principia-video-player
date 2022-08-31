@@ -1,11 +1,28 @@
+import yargs from 'yargs/yargs';
+import { hideBin } from 'yargs/helpers';
 import UPNG from 'upng-js';
 import * as fs from 'fs/promises';
 import './buffer-replace.js';
 import encBwRle from './encodings/bw_rle.js';
 
-const encodings = {encBwRle};
-const file = process.argv[2] ?? "in.png";
-const encoding = process.argv[3] ?? "encBwRle";
+const encodings = { encBwRle };
+const { argv } = yargs(hideBin(process.argv))
+  .usage('Usage: $0 <file> [options]')
+  .command('$0 <file>', 'default command', yargs => {
+    yargs.positional('file', {
+      describe: 'Animated png file',
+      type: 'string',
+    });
+  })
+  .option('encoding', {
+    alias: 'e',
+    describe: 'Video encoding type',
+    choices: Object.keys(encodings),
+    default: 'encBwRle'
+  })
+  .demandCommand();
+argv.file = argv._[0];
+const { file, encoding } = argv;
 
 console.log(`Using encoding "${encoding}"`);
 
