@@ -3,6 +3,7 @@ import { hideBin } from 'yargs/helpers';
 import UPNG from 'upng-js';
 import * as fs from 'fs/promises';
 import * as pathlib from 'path';
+import { fileURLToPath } from 'url';
 import './buffer-replace.js';
 import encBwRle from './encodings/bw_rle.js';
 
@@ -10,7 +11,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = pathlib.dirname(__filename);
 
 const encodings = { encBwRle };
-const { argv } = yargs(hideBin(process.argv))
+const argv = await yargs(hideBin(process.argv))
   .usage('Usage: $0 <file> [options]')
   .option('video', {
     alias: 'v',
@@ -31,12 +32,13 @@ const { argv } = yargs(hideBin(process.argv))
   .option('output', {
     alias: 'o',
     describe: 'Output directory path',
-    type: 'string'
+    type: 'string',
+    default: './_output'
   })
-  .check(argv => {
+  .check(async argv => {
     //Check if at least one audio/video flag is set
     if (!(argv.audio || argv.video)) {
-      throw new Error("No actions to perform. Specify either -v or -a flag");
+      return "No actions to perform. Specify either -v or -a flag";
     }
     //Check if paths point to valid files
     const paths = [
@@ -46,23 +48,24 @@ const { argv } = yargs(hideBin(process.argv))
     for (const path of paths) {
       if (!path) continue;
       if (!(await fs.exists(path))) {
-        throw new Error(`File doesn't exist: "${path}"`)
+        return `File doesn't exist: "${path}"`;
       }
       const lstat = await fs.lstat(path);
       if (lstat.isDirectory()) {
-        throw new Error(`Is a directory: "${path}"`)
+        return `Is a directory: "${path}"`;
       } else if (!(lstat.isFile())) {
-        throw new Error(`Not a file: "${path}"`)
+        return `Not a file: "${path}"`;
       }
     }
     return true;
-  });
+  }).parseAsync();
 let { audio, video, output, encoding } = argv;
-audio = pathlib.resolve(audio);
-video = pathlib.resolve(video);
+if (audio) audio = pathlib.resolve(audio);
+if (video) video = pathlib.resolve(video);
+output = output.resolve(output);
 
 /* Generate video */
-let outLua, outVideoBin;
+let outVideoLua, outVideoBin;
 if (video) {
   console.log(`Using video encoding "${encoding}"`);
   
@@ -113,22 +116,22 @@ if (video) {
     playerCode
   ]);
   console.log(`\t- Player code size: ${lua.length} characters`);
-  outLua = lua;
+  outVideoLua = lua;
   outVideoBin = buf;
 }
 
 /* Write generated data */
 {
   console.log("Writing data...");
-  try {
-    await fs.rm("./output", { recursive: true });
-  } catch {}
-  await fs.mkdir("./output");
+  console.log(`\t- Output directory "${ output }"`);
+  if (!(await fs.exists(output))) {
+    await fs.mkdir(output);
+  }
   const promises = [];
   if (video) {
     promises.push(
-      fs.writeFile("./output/player.lua", outLua),
-      fs.writeFile("./output/video.bin", outVideoBin)
+      fs.writeFile(pathlib.join(output, "player.lua"), outVideoLua),
+      fs.writeFile(pathlib.join(output, "video.bin"), outVideoBin)
     );
   }
   await Promise.all(promises);
