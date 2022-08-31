@@ -1,7 +1,7 @@
 import yargs from 'yargs/yargs';
 import { hideBin } from 'yargs/helpers';
 import UPNG from 'upng-js';
-import fs from 'fs-extra ';
+import fs from 'fs-extra';
 import * as pathlib from 'path';
 import { fileURLToPath } from 'url';
 import './common/buffer-replace.js';
@@ -12,7 +12,6 @@ const __dirname = pathlib.dirname(__filename);
 
 const encodings = { encBwRle };
 const argv = await yargs(hideBin(process.argv))
-  .usage('Usage: $0 <file> [options]')
   .option('video', {
     alias: 'v',
     describe: 'Animated PNG/APNG file',
