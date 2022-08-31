@@ -9,5 +9,10 @@
     "upng-js": "^2.1.0",
     "yargs": "^17.5.1"
   },
-  "packageManager": "yarn@3.2.3"
+  "packageManager": "yarn@3.2.3",
+  "engines": {
+    "npm": "please-use-yarn",
+    "yarn": ">= 3",
+    "node": ">= 16"
+  }
 }
