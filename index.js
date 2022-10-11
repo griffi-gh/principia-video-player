@@ -1,6 +1,7 @@
 import yargs from 'yargs/yargs';
 import { hideBin } from 'yargs/helpers';
 import UPNG from 'upng-js';
+import { Midi } from '@tonejs/midi'
 import fs from 'fs-extra';
 import * as pathlib from 'path';
 import { fileURLToPath } from 'url';
@@ -67,6 +68,8 @@ output = pathlib.resolve(output);
 /* Generate video */
 let outVideoLua, outVideoBin;
 if (video) {
+  console.log("=== VIDEO STEP ===");
+  
   console.log(`Using video encoding "${encoding}"`);
   
   console.log(`Reading file "${ video }"...`);
@@ -118,6 +121,21 @@ if (video) {
   console.log(`\t- Player code size: ${lua.length} characters`);
   outVideoLua = lua;
   outVideoBin = buf;
+  console.log("=== VIDEO READY ===\n");
+}
+
+if (audio) {
+  console.log("=== AUDIO STEP ===");
+  
+  console.log(`Reading file "${audio}"...`);
+  const midiData = await fs.readFile(audio);
+  
+  console.log('Parsing MIDI');
+  const midi = new Midi(midiData);
+  console.log(`\t- Name: ${ midi.name }`);
+  console.log(`\t- Duration: ${ midi.durationTicks } ticks`);
+  
+  console.log("=== AUDIO READY ===\n");
 }
 
 /* Write generated data */
