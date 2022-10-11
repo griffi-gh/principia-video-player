@@ -1,7 +1,8 @@
 import yargs from 'yargs/yargs';
 import { hideBin } from 'yargs/helpers';
 import UPNG from 'upng-js';
-import { Midi } from '@tonejs/midi'
+import MIDI from '@tonejs/midi';
+const { Midi } = MIDI;
 import fs from 'fs-extra';
 import * as pathlib from 'path';
 import { fileURLToPath } from 'url';
