@@ -124,6 +124,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"luamin@npm:^1.0.4":
+  version: 1.0.4
+  resolution: "luamin@npm:1.0.4"
+  dependencies:
+    luaparse: ^0.2.1
+  bin:
+    luamin: bin/luamin
+  checksum: 2f101ba19f47ec9b96dffc926a52e261f872782e0e5f96a4701845b6b5ceb48074b77fe9dd31b2811527a9114ca21b8773d53457cb15ff5a99207920afc9d174
+  languageName: node
+  linkType: hard
+
+"luaparse@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "luaparse@npm:0.2.1"
+  bin:
+    luaparse: ./bin/luaparse
+  checksum: db5fb4c535b21475869454eedf7f919e5c488db5fc1ef41397bab717e4a26932f50ad91d96101eb6a1e4a3a6e8a7953e816ac5bc2594a1baadb009a38b5eacd5
+  languageName: node
+  linkType: hard
+
 "midi-file@npm:^1.2.2":
   version: 1.2.3
   resolution: "midi-file@npm:1.2.3"
@@ -144,6 +164,7 @@ __metadata:
   dependencies:
     "@tonejs/midi": ^2.0.28
     fs-extra: ^10.1.0
+    luamin: ^1.0.4
     upng-js: ^2.1.0
     yargs: ^17.5.1
   languageName: unknown

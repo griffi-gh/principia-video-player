@@ -2,14 +2,15 @@ import yargs from 'yargs/yargs';
 import { hideBin } from 'yargs/helpers';
 import UPNG from 'upng-js';
 import MIDI from '@tonejs/midi';
-const { Midi } = MIDI;
 import fs from 'fs-extra';
 import * as pathlib from 'path';
 import { fileURLToPath } from 'url';
 import './common/buffer-replace.js';
 import luaCumString from './common/luastr.js';
 import encBwRle from './encodings/bw_rle.js';
+import luamin from 'luamin';
 
+const { Midi } = MIDI;
 const encodings = { encBwRle };
 
 const __filename = fileURLToPath(import.meta.url);
@@ -109,10 +110,13 @@ if (video) {
   const playerPath = `./player/${encoding}.lua`;
   const resolvedPath = pathlib.resolve(__dirname, playerPath);
   const playerCode = await fs.readFile(resolvedPath);
+  //const playerCode = await fs.readFile(resolvedPath, 'utf-8');
+  //const minPlrCode = luamin.minify(playerCode);
   const lua = Buffer.concat([
     Buffer.from('local DATA='),
     luaCumString(buf),
-    playerCode
+    //Buffer.from(minPlrCode),
+    playerCode,
   ]);
   console.log(`\t- Player code size: ${lua.length} characters`);
   outVideoLua = lua;
