@@ -109,14 +109,12 @@ if (video) {
   console.log("Generating player code...");
   const playerPath = `./player/${encoding}.lua`;
   const resolvedPath = pathlib.resolve(__dirname, playerPath);
-  const playerCode = await fs.readFile(resolvedPath);
-  //const playerCode = await fs.readFile(resolvedPath, 'utf-8');
-  //const minPlrCode = luamin.minify(playerCode);
+  const playerCode = await fs.readFile(resolvedPath, 'utf-8');
+  const minPlrCode = luamin.minify(playerCode);
   const lua = Buffer.concat([
     Buffer.from('local DATA='),
     luaCumString(buf),
-    //Buffer.from(minPlrCode),
-    playerCode,
+    Buffer.from(minPlrCode),
   ]);
   console.log(`\t- Player code size: ${lua.length} characters`);
   outVideoLua = lua;
