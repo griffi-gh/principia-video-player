@@ -7,12 +7,14 @@ import fs from 'fs-extra';
 import * as pathlib from 'path';
 import { fileURLToPath } from 'url';
 import './common/buffer-replace.js';
+import luaCumString from './common/luastr.js';
 import encBwRle from './encodings/bw_rle.js';
+
+const encodings = { encBwRle };
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = pathlib.dirname(__filename);
 
-const encodings = { encBwRle };
 const argv = await yargs(hideBin(process.argv))
   .option('video', {
     alias: 'v',
@@ -104,19 +106,12 @@ if (video) {
   console.log(`\t- Raw buffer size: ${buf.length} bytes.`);
     
   console.log("Generating player code...");
-  const PREFIX = 'local DATA=([=[\n';
-  const POSTFIX = String.raw `]=]):gsub("\nr","\r"):gsub("\nn","\n"):gsub("\n0","\0");`;
   const playerPath = `./player/${encoding}.lua`;
   const resolvedPath = pathlib.resolve(__dirname, playerPath);
   const playerCode = await fs.readFile(resolvedPath);
-  const processedBuf = buf
-    .replace(Buffer.from([10]), Buffer.from([10, 'n'.charCodeAt()]))
-    .replace(Buffer.from([13]), Buffer.from([10, 'r'.charCodeAt()]))
-    .replace(Buffer.from([0 ]), Buffer.from([10, '0'.charCodeAt()]));
   const lua = Buffer.concat([
-    Buffer.from(PREFIX),
-    processedBuf,
-    Buffer.from(POSTFIX),
+    Buffer.from('local DATA='),
+    luaCumString(buf),
     playerCode
   ]);
   console.log(`\t- Player code size: ${lua.length} characters`);
