@@ -48,7 +48,6 @@ function step()
         --Flip color
         c = not c
       end
-     
       --Render
       while d > 0 do
         --Decrement d
@@ -70,15 +69,20 @@ function step()
           end
         end
       end
-     
     until B
   end
   -- Decrement delay counter
   S = S - 1
-  --Drae sprite
-  this:draw_sprite(0, 0, 0, 2, 1, 0, 0, w, h)
+  -- Draw sprite
+  this:draw_sprite(0, 0, 0, 4, 3, 0, 0, w, h)
 end
+
+--x, y, rotation, width, height, texel_from_x, texel_from_y, texel_to_x, texel_to_y
 
 function init()
   this:init_draw(256, 256)
+  -- this:set_sprite_filtering(0)
+  -- this:clear_texels(0)
+  -- this:add_static_sprite(0, 0, 0, 4, 3, 0, 0, w, h)
+  -- world:get_entity(this:get_id()):hide()
 end

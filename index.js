@@ -6,7 +6,7 @@ import fs from 'fs-extra';
 import * as pathlib from 'path';
 import { fileURLToPath } from 'url';
 import './common/buffer-replace.js';
-import luaCumString from './common/luastr.js';
+import luaCumString from './common/luastr-workaround.js';
 import encBwRle from './encodings/bw_rle.js';
 import luamin from 'luamin';
 
@@ -39,6 +39,11 @@ const argv = await yargs(hideBin(process.argv))
     type: 'string',
     default: './_output'
   })
+  .option('nominify', {
+    alias: 'm',
+    describe: 'Do not minify lua files',
+    type: 'boolean',
+  })
   .check(async argv => {
     //Check if at least one audio/video flag is set
     if (!(argv.audio || argv.video)) {
@@ -64,7 +69,7 @@ const argv = await yargs(hideBin(process.argv))
     return true;
   })
   .parseAsync();
-let { audio, video, output, encoding } = argv;
+let { audio, video, output, encoding, nominify } = argv;
 if (audio) audio = pathlib.resolve(audio);
 if (video) video = pathlib.resolve(video);
 output = pathlib.resolve(output);
@@ -110,7 +115,10 @@ if (video) {
   const playerPath = `./player/${encoding}.lua`;
   const resolvedPath = pathlib.resolve(__dirname, playerPath);
   const playerCode = await fs.readFile(resolvedPath, 'utf-8');
-  const minPlrCode = luamin.minify(playerCode);
+  let minPlrCode = playerCode;
+  if (!nominify) {
+    minPlrCode = luamin.minify(minPlrCode);
+  }
   const lua = Buffer.concat([
     Buffer.from('local DATA='),
     luaCumString(buf),
