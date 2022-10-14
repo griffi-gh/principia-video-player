@@ -1,6 +1,6 @@
 local host = "digitalcitrus.atwebpages.com"
 local port = 80
-local path = "/index.html"
+local path = "/player.lua"
 --
 if require then socket = require'socket' end
 if not print then print = function() end end
