@@ -5,15 +5,6 @@ const ESCAPE = [
   [10, 'n'], //must be first
   [13, 'r'],
   [0,  '0'],
-  //some of these may break save files
-  [1,  '1'],
-  [2,  '2'],
-  [3,  '3'],
-  [4,  '4'],
-  [5,  '5'],
-  [6,  '6'],
-  [7,  '7'],
-  [8,  '8'],
 ];
 const LUA_PRE_STR = Buffer.from('([=[\n');
 const LUA_POST_STR = Buffer.from(']=])' + ESCAPE.slice().reverse().map(esc => (

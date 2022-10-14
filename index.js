@@ -6,12 +6,14 @@ import fs from 'fs-extra';
 import * as pathlib from 'path';
 import { fileURLToPath } from 'url';
 import './common/buffer-replace.js';
-import luaCumString from './common/luastr-workaround.js';
+import luaHex from './common/luastr-workaround.js';
+import luaBin from './common/luastr.js';
 import encBwRle from './encodings/bw_rle.js';
 import luamin from 'luamin';
 
 const { Midi } = MIDI;
 const encodings = { encBwRle };
+const strEncodings = { luaHex, luaBin };
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = pathlib.dirname(__filename);
@@ -44,6 +46,12 @@ const argv = await yargs(hideBin(process.argv))
     describe: 'Do not minify lua files',
     type: 'boolean',
   })
+  .option('string', {
+    alias: 's',
+    describe: 'Lua string encoding type',
+    choices: Object.keys(strEncodings),
+    default: 'luaHex'
+  })
   .check(async argv => {
     //Check if at least one audio/video flag is set
     if (!(argv.audio || argv.video)) {
@@ -69,7 +77,7 @@ const argv = await yargs(hideBin(process.argv))
     return true;
   })
   .parseAsync();
-let { audio, video, output, encoding, nominify } = argv;
+let { audio, video, output, encoding, nominify, string: strEnc } = argv;
 if (audio) audio = pathlib.resolve(audio);
 if (video) video = pathlib.resolve(video);
 output = pathlib.resolve(output);
@@ -121,7 +129,7 @@ if (video) {
   }
   const lua = Buffer.concat([
     Buffer.from('local DATA='),
-    luaCumString(buf),
+    strEncodings[strEnc](buf),
     Buffer.from(minPlrCode),
   ]);
   console.log(`\t- Player code size: ${lua.length} characters`);
