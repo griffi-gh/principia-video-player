@@ -16,4 +16,10 @@ do
 end
 local _, split = result:find("\r\n\r\n")
 local text = result:sub(split, #result)
-assert(load(text))()
+local fn = assert(load(text))
+local noop = function()end
+function step()
+  _G.step = noop
+  fn()
+  init()
+end
