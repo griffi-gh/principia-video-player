@@ -1,0 +1,1 @@
+error('HQ files are supposed to be used with the streaming player only')

@@ -4,12 +4,21 @@ const threshold = (r, g, b) => {
   return ((r + g + b) / 3) > TRESHOLD;
 };
 
-export default (data, width, height) => {
+export default (data, width, height, support_hq) => {
   const out = [];
   
   //Encode metadata
-  out.push(width);
-  out.push(height); 
+  if (support_hq) {
+    out.push('H'.charCodeAt());
+    out.push('Q'.charCodeAt());
+    out.push(width & 0xFF);
+    out.push((width & 0xFF00) >> 8);
+    out.push(height & 0xFF);
+    out.push((height & 0xFF00) >> 8);
+  } else {
+    out.push(width);
+    out.push(height);
+  }
   
   //Encode pixels
   let counter = 0;

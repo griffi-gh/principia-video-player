@@ -12,8 +12,9 @@ import encBwRle from './encodings/bw_rle.js';
 import luamin from 'luamin';
 
 const { Midi } = MIDI;
-const encodings = { encBwRle };
 const strEncodings = { luaHex, luaBin };
+const encBwRleHq = (data, width, height) => encBwRle(data, width, height, true);
+const encodings = { encBwRle, encBwRleHq };
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = pathlib.dirname(__filename);
